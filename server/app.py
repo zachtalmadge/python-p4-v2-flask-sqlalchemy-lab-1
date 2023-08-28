@@ -25,23 +25,19 @@ def index():
 
 @app.route('/earthquakes/<int:id>')
 def earthquake_by_id(id):
-    quake = Earthquake.query.filter_by(id=id).first()
-
-    if not quake:
-        body = {'message': f'Earthquake {id} not found.'}
-        status = 404
-    else:
+    if quake := Earthquake.query.filter_by(id=id).first():
         body = quake.to_dict()
         status = 200
 
+    else:
+        body = {'message': f'Earthquake {id} not found.'}
+        status = 404
     return make_response(body, status)
 
 
 @app.route('/earthquakes/magnitude/<float:magnitude>')
 def earthquake_by_magnitude(magnitude):
-    quakes = []
-    for quake in Earthquake.query.filter(Earthquake.magnitude >= magnitude).all():
-        quakes.append(quake.to_dict())
+    quakes = [quake.to_dict() for quake in Earthquake.query.filter(Earthquake.magnitude >= magnitude).all()]
     body = {'count': len(quakes),
             'quakes': quakes
             }
