@@ -1,4 +1,4 @@
-# Flask SQLAlchemy Lab
+# Flask-SQLAlchemy Lab 1
 
 ## Learning Goals
 
